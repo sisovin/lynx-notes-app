@@ -1,0 +1,74 @@
+# Dependencies
+/node_modules
+/backend/node_modules
+/frontend/node  _modules
+# Build output 
+/frontend/dist/*
+/.pnp
+.pnp.js
+
+# Build
+/dist
+/build
+/.rsbuild
+/.swc
+
+# Testing
+/coverage
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+bun-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+/backend/.env
+/backend/.env.local
+/backend/.env.development.local
+/backend/.env.test.local
+/backend/.env.production.local
+/backend/.env.development
+/backend/.env.test
+/backend/.env.production
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/frontend/.env.development
+/frontend/.env.test
+/frontend/.env.production
+/docs
+docs/*.md
+
+# Add these lines to your existing .gitignore
+
+# Secrets and credentials
+**/credentials.json
+**/secrets.json
+**/*.key
+**/*.pem
+**/*.p12
+**/token.*
+
+/backend/database.sqlite
+/backend/database.sqlite.backup
+/backend/database.sqlite.backup.*
+/backend/database.sqlite.backup.*

@@ -1,0 +1,31 @@
+/* Import Tailwind */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities'; */
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+/* Root variables for theme - light mode defaults */
+:root {
+  --background: #f8f9fa;
+  --card-background: #ffffff;
+  --text-color: #333333;
+  --text-secondary: #6c757d;
+  --primary-color: #4f46e5;
+  --hover-color: #4338ca;
+  --border-color: #e5e7eb;
+}
+
+/* Dark mode overrides */ 
+.dark {
+  --background: #1a1a1a;
+  --card-background: #2d2d2d;
+  --text-color: #f0f0f0;
+  --text-secondary: #adb5bd;
+  --primary-color: #6366f1;
+  --hover-color: #818cf8;
+  --border-color: #4b5563;
+  --text-color: #e5e7eb;
+}

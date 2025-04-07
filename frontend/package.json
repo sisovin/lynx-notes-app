@@ -1,0 +1,44 @@
+{
+  "name": "rspeedy-react-ts",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build:css": "node generate-css.js",
+    "build:js": "node build.js",
+    "dev:ss": "bun run --watch src/server.js",
+    "dev": "node build.js && bun run dev:ss",
+    "build": "node build.js",
+    "start": "node build.js && bun run src/server.js",
+    "dev:rspeedy": "bunx rspeedy dev",
+    "preview:rspeedy": "bunx rspeedy preview"
+  },
+  "dependencies": {
+    "@lynx-js/react": "^0.106.2",
+    "axios": "^1.8.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.9",
+    "@babel/preset-react": "^7.23.3",
+    "@lynx-js/qrcode-rsbuild-plugin": "^0.3.5",
+    "@lynx-js/react-rsbuild-plugin": "^0.9.4",
+    "@lynx-js/rspeedy": "^0.8.7",
+    "@lynx-js/types": "^3.2.1",
+    "@rsbuild/core": "^0.4.13",
+    "@rsbuild/plugin-react": "^0.4.13",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/postcss": "^4.1.3",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/react": "^18.3.20",
+    "@types/react-dom": "^18.2.19",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^9.1.2",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.3",
+    "typescript": "~5.7.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
