@@ -24,22 +24,26 @@ interface Note {
   updatedAt?: string;
 }
 
+// Sample fix:
+const API_BASE_URL = window.process && window.process.env && window.process.env.REACT_APP_API_URL || 'http://192.168.50.131:3001/api';
+
+// Ensure the endpoint includes the protocol
+const baseURL = API_BASE_URL.startsWith('http') ? API_BASE_URL : `http://${API_BASE_URL}`;
+
 // Log the API configuration
 console.log("API Service Configuration:", {
-  baseURL: config.api.baseURL,
+  baseURL: `${baseURL}`,
   timeout: config.api.timeout
 });
 
-// Create an axios instance with default configuration
+// Initialize Axios with the correct configuration
 const api: AxiosInstance = axios.create({
-  baseURL: config.api.baseURL,
-  timeout: config.api.timeout,
+  baseURL: baseURL,
+  timeout: 10000,
+  withCredentials: true, // This might be needed for cookie-based auth
   headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-  },
-  // Enable credentials (cookies, authorization headers)
-  withCredentials: true
+    'Content-Type': 'application/json',
+  }
 });
 
 // Add request interceptor to add auth token
@@ -127,7 +131,27 @@ export const apiService = {
       throw error;
     }
   },
+
   
+  async signup(userData: { username: string; email: string; password: string }) {
+    try {
+      const response = await api.post<LoginResponse>('/auth/signup', userData);
+      
+      // Store token and user data in localStorage
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user || {}));
+        console.log('Token stored in localStorage');
+      }
+      
+      return response;
+   } catch (error) {
+    console.error('Signup failed:', error);
+    throw error;
+   }
+  },
+
+    
   async logout(): Promise<AxiosResponse<{message: string}>> {
     try {
       const response = await api.post<{message: string}>('/auth/logout');

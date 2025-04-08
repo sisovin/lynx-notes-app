@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState }  from "react";
 import axios from 'axios';
 
 const DebugPage: React.FC = () => {
@@ -10,8 +10,7 @@ const DebugPage: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const results = {};
-      
+      const results: Record<string, any> = {};
       // Test health endpoint
       try {
         const health = await axios.get('/api/health');

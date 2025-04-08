@@ -4,16 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lynx Notes App</title>
-  <!-- Include the CSS directly -->
   <link rel="stylesheet" href="/client.css">
-  <link rel="stylesheet" href="/global.css">
-  <link rel="stylesheet" href="/index.css">
-  <link rel="stylesheet" href="/App.css">
 </head>
 <body>
   <div id="root"></div>
+  <!-- Load performance shim first -->
+  <script src="/performance-shim.js"></script>
+  <!-- Then other global scripts -->
   <script src="/lepus-global.js"></script>
+  <script src="/lepus-fallback.js"></script>
   <script src="/process-env-shim.js"></script>
+  <!-- Finally the application code -->
   <script src="/client.js"></script>
 </body>
 </html>

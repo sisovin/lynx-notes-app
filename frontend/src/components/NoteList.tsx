@@ -7,6 +7,7 @@ import React, {
 import { apiService } from "../api/apiService";
 import { directApiHelpers } from "../api/directApi";
 
+
 interface Note {
   id: number;
   title: string;
@@ -60,8 +61,8 @@ const NoteList = forwardRef<NoteListHandle, NoteListProps>(
         console.error("Failed to fetch notes", error);
         setError(
           error.response?.data?.message ||
-            error.message ||
-            "Failed to load notes"
+          error.message ||
+          "Failed to load notes"
         );
       } finally {
         setLoading(false);
@@ -84,38 +85,41 @@ const NoteList = forwardRef<NoteListHandle, NoteListProps>(
       return () => clearInterval(interval);
     }, []);
 
+    // Then replace your return statement (around line 88) with:
     if (loading)
       return (
-        <div className="text-secondary animate-pulse">Loading notes...</div>
+        <div className="notes-loading animate-pulse">Loading notes...</div>
       );
     if (error) return <div className="text-red-500">{error}</div>;
     if (notes.length === 0)
       return (
-        <div className="text-secondary">
+        <div className="notes-empty">
           No notes yet. Create your first note!
         </div>
       );
 
     return (
-      <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="notes-container">
         {notes.map((note) => (
           <div
             key={note.id}
-            className="border border-border rounded-lg p-4 hover:bg-card transition-colors bg-background shadow-sm"
+            className="note-card"
           >
-            <h3 className="font-bold text-text">{note.title}</h3>
-            <p className="text-secondary text-sm mt-2 line-clamp-4">
-              {note.content || "No content"}
-            </p>
-            <div className="flex justify-between items-center mt-4 pt-2 border-t border-border">
-              <span className="text-xs text-secondary">
+            <div className="note-content">
+              <h3 className="note-title">{note.title}</h3>
+              <p className="note-body">
+                {note.content || "No content"}
+              </p>
+            </div>
+            <div className="note-footer">
+              <span>
                 {note.updatedAt &&
                   `Updated: ${new Date(note.updatedAt).toLocaleString()}`}
               </span>
-              <div className="flex gap-2">
+              <div className="note-actions">
                 {onEdit && (
                   <button
-                    className="text-primary hover:text-hover p-1"
+                    className="note-action-button"
                     aria-label="Edit"
                     onClick={() => onEdit(note)}
                   >
@@ -137,7 +141,7 @@ const NoteList = forwardRef<NoteListHandle, NoteListProps>(
                 )}
                 {onDelete && (
                   <button
-                    className="text-red-500 hover:text-red-700 p-1"
+                    className="note-action-button"
                     aria-label="Delete"
                     onClick={() => onDelete(note.id)}
                   >
@@ -165,6 +169,6 @@ const NoteList = forwardRef<NoteListHandle, NoteListProps>(
       </div>
     );
   }
-);
+);  
 
 export default NoteList;

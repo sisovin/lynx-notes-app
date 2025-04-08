@@ -2,12 +2,23 @@
 window.__FIRST_SCREEN_SYNC_TIMING__ = performance.now();
 window.__FIRST_SCREEN_ASYNC_TIMING__ = 0;
 
-// Global configuration
-window.LEPUS_CONFIG = {
+// Global configuration for Lynx Notes App
+window.__LEPUS__ = {
   apiBase: '/api',
   version: '1.0.0',
-  environment: 'development'
+  environment: 'development',
+  features: {
+    darkMode: true,
+    offlineSupport: true
+  },
+  config: {
+    noteRefreshInterval: 30000, // 30 seconds
+    maxNoteLength: 5000,
+    autoSaveInterval: 5000  // 5 seconds
+  }
 };
+
+console.log('Lepus global configuration loaded:', window.__LEPUS__);
 
 // Set up basic Lynx/Lepus compatibility layer
 window.__LEPUS__ = window.__LEPUS__ || {

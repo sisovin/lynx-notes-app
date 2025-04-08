@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
-
+import React,  { useEffect, useState } from "react";
 const DarkModeToggle: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 

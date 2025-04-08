@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import NoteList, { NoteListHandle } from "./NoteList";
-import { apiHelpers } from "../api/apiService";
+import { apiService } from "../api/apiService";
 
 interface User {
   id: number;
@@ -44,10 +44,10 @@ const NoteDashboard: React.FC<NoteDashboardProps> = ({ user, onLogout }) => {
 
       if (editingNote) {
         // Update existing note
-        await apiHelpers.updateNote(editingNote.id, { title, content });
+        await apiService.updateNote(editingNote.id, { title, content });
       } else {
         // Create new note
-        await apiHelpers.createNote(title, content);
+        await apiService.createNote({ title, content });
       }
 
       // Reset form and trigger refresh
@@ -74,7 +74,7 @@ const NoteDashboard: React.FC<NoteDashboardProps> = ({ user, onLogout }) => {
     }
 
     try {
-      await apiHelpers.deleteNote(noteId);
+      await apiService.deleteNote(noteId);
       setNoteAdded(!noteAdded); // Toggle to trigger useEffect in NoteList
       // After successful delete
       noteListRef.current?.refresh();

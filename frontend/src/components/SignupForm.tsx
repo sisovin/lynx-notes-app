@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../api/apiService";
+import { apiService } from "../api/apiService";
 
 const SignupForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -31,7 +31,7 @@ const SignupForm: React.FC = () => {
     try {
       setLoading(true);
 
-      const response = await api.post("/auth/signup", {
+      const response = await apiService.signup({
         username,
         email,
         password,
