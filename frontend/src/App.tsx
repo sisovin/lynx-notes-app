@@ -4,10 +4,9 @@ import DarkModeToggle from "./components/DarkModeToggle";
 import DevTools from "./components/DevTools";
 import ApiTester from "./components/tests/ApiTester";
 import NetworkHealth from "./components/NetworkHealth";
+import QRCodeDisplay from "./components/QRCodeDisplay";
 
 export function App() {
-  const [showDevTools, setShowDevTools] = useState(false);
-  
   // Check if we're in development mode
   useEffect(() => {
     const hostname = window.location.hostname;
@@ -23,22 +22,11 @@ export function App() {
       <div className="fixed top-4 right-4 z-50">
         <DarkModeToggle />
       </div>
-      
-      {/* Main content */}
       <HomePage />
-      
-      {/* Dev tools - only show in development mode */}
-      {showDevTools && (
-        <>
-          <ApiTester />
-          <DevTools />
-        </>
-      )}
-      
-      {/* Network status - show on all environments but separate from dev tools */}
-      <div className="fixed bottom-4 left-4 z-40">
-        <NetworkHealth />
-      </div>
+      {isDev && <ApiTester />}          
+      {isDev && <DevTools />}  
+      <NetworkHealth />
+      <QRCodeDisplay />
     </div>
   );
 }
