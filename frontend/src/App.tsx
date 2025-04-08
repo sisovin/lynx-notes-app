@@ -4,16 +4,17 @@ import DarkModeToggle from "./components/DarkModeToggle";
 import DevTools from "./components/DevTools";
 import ApiTester from "./components/tests/ApiTester";
 import NetworkHealth from "./components/NetworkHealth";
-import QRCodeDisplay from "./components/QRCodeDisplay";
 
 export function App() {
+  const [isDev, setIsDev] = useState(false);
+  
   // Check if we're in development mode
   useEffect(() => {
     const hostname = window.location.hostname;
-    const isDev = hostname === 'localhost' || 
+    const isDevelopment = hostname === 'localhost' || 
                   hostname === '127.0.0.1' || 
                   hostname.includes('192.168');
-    setShowDevTools(isDev);
+    setIsDev(isDevelopment);
   }, []);
                 
   return (
@@ -26,7 +27,6 @@ export function App() {
       {isDev && <ApiTester />}          
       {isDev && <DevTools />}  
       <NetworkHealth />
-      <QRCodeDisplay />
     </div>
   );
 }
