@@ -5,65 +5,118 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// RUN GENERATE-CSS.JS BEFORE ANYTHING ELSE
+console.log('📝 Building Tailwind CSS...');
+try {
+  execSync('node generate-css.js', { stdio: 'inherit' });
+  console.log('✅ Tailwind CSS built successfully');
+} catch (error) {
+  console.error('⚠️ Tailwind CSS build failed, using fallback CSS:', error);
+  // Continue with the build process
+}
 // Ensure dist directory exists
-if (!fs.existsSync('dist')) {
-  fs.mkdirSync('dist', { recursive: true });
+if (!fs.existsSync(path.join(__dirname, 'dist'))) {
+  fs.mkdirSync(path.join(__dirname, 'dist'), { recursive: true });
 }
 
 // Ensure the styles directory exists
-if (!fs.existsSync('src/styles')) {
-  fs.mkdirSync('src/styles', { recursive: true });
-  
-  // Create basic CSS files if they don't exist
-  if (!fs.existsSync('src/styles/App.css')) {
-    fs.writeFileSync('src/styles/App.css', '/* App styles */\n');
-    console.log('Created empty App.css');
-  }
-  
-  if (!fs.existsSync('src/styles/global.css')) {
-    fs.writeFileSync('src/styles/global.css', '/* Global styles */\n');
-    console.log('Created empty global.css');
-  }
+if (!fs.existsSync(path.join(__dirname, 'src', 'styles'))) {
+  fs.mkdirSync(path.join(__dirname, 'src', 'styles'), { recursive: true });
 }
+
+// Create basic CSS files if they don't exist
+if (!fs.existsSync(path.join(__dirname, 'src', 'styles', 'App.css'))) {
+  fs.writeFileSync(path.join(__dirname, 'src', 'styles', 'App.css'), '/* App styles */\n');
+  console.log('Created empty App.css');
+}
+
+if (!fs.existsSync(path.join(__dirname, 'src', 'styles', 'global.css'))) {
+  fs.writeFileSync(path.join(__dirname, 'src', 'styles', 'global.css'), '/* Global styles */\n');
+  console.log('Created empty global.css');
+}
+
 
 // Process CSS files
 console.log('📝 Preparing CSS files...');
 try {
   // Create a single combined CSS file
-  let combinedCss = '';
-  
+  let combinedCss = "";
+
   // Start with global.css
-  if (fs.existsSync('src/styles/global.css')) {
-    combinedCss += fs.readFileSync('src/styles/global.css', 'utf8');
-    console.log('✅ Added global.css to combined CSS');
+  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'global.css'))) {
+    combinedCss += fs.readFileSync(path.join(__dirname, 'src', 'styles', 'global.css'), "utf8");
+    console.log("✅ Added global.css to combined CSS");
   }
-  
+
   // Add the NoteList component styles
-  if (fs.existsSync('src/styles/components/NoteList.css')) {
-    combinedCss += '\n\n' + fs.readFileSync('src/styles/components/NoteList.css', 'utf8');
-    console.log('✅ Added NoteList.css to combined CSS');
-  } else if (fs.existsSync('src/styles/NoteList.css')) {
+  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'components', 'NoteList.css'))) {
+    combinedCss +=
+      "\n\n" + fs.readFileSync(path.join(__dirname, 'src', 'styles', 'components', 'NoteList.css'), "utf8");
+    console.log("✅ Added NoteList.css to combined CSS");
+  } else if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'NoteList.css'))) {
     // Fallback to the old location
-    combinedCss += '\n\n' + fs.readFileSync('src/styles/NoteList.css', 'utf8');
-    console.log('✅ Added NoteList.css to combined CSS');
+    combinedCss += "\n\n" + fs.readFileSync(path.join(__dirname, 'src', 'styles', 'NoteList.css'), "utf8");
+    console.log("✅ Added NoteList.css to combined CSS");
   }
-  
+
+  // Add the SplashScreen component styles
+  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'components', 'SplashScreen.css'))) {
+    combinedCss +=
+      "\n\n" + fs.readFileSync(path.join(__dirname, 'src', 'styles', 'components', 'SplashScreen.css'), "utf8");
+    console.log("✅ Added SplashScreen.css to combined CSS");
+  } else if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'SplashScreen.css'))) {
+    // Fallback to the old location
+    combinedCss += "\n\n" + fs.readFileSync(path.join(__dirname, 'src', 'styles', 'SplashScreen.css'), "utf8");
+    console.log("✅ Added SplashScreen.css to combined CSS");
+  }
+
   // Write the combined CSS file
-  fs.writeFileSync('dist/client.css', combinedCss);
-  console.log('✅ Combined CSS written to client.css');
-  
+  fs.writeFileSync(path.join(__dirname, 'dist', 'client.css'), combinedCss);
+  console.log("✅ Combined CSS written to client.css");
+
   // Also keep individual files for direct linking
-  if (fs.existsSync('src/styles/global.css')) {
-    fs.copyFileSync('src/styles/global.css', 'dist/global.css');
+  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'global.css'))) {
+    fs.copyFileSync(path.join(__dirname, 'src', 'styles', 'global.css'), path.join(__dirname, 'dist', 'global.css'));
   }
-  
-  if (fs.existsSync('src/styles/components/NoteList.css')) {
-    fs.copyFileSync('src/styles/components/NoteList.css', 'dist/NoteList.css');
-  } else if (fs.existsSync('src/styles/NoteList.css')) {
-    fs.copyFileSync('src/styles/NoteList.css', 'dist/NoteList.css');
+
+  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'components', 'NoteList.css'))) {
+    fs.copyFileSync(path.join(__dirname, 'src', 'styles', 'components', 'NoteList.css'), path.join(__dirname, 'dist', 'NoteList.css'));
+  } else if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'NoteList.css'))) {
+    fs.copyFileSync(path.join(__dirname, 'src', 'styles', 'NoteList.css'), path.join(__dirname, 'dist', 'NoteList.css'));
+  }
+
+  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'components', 'SplashScreen.css'))) {
+    fs.copyFileSync(
+      path.join(__dirname, 'src', 'styles', 'components', 'SplashScreen.css'),
+      path.join(__dirname, 'dist', 'SplashScreen.css')
+    );
+  } else if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'SplashScreen.css'))) {
+    fs.copyFileSync(path.join(__dirname, 'src', 'styles', 'SplashScreen.css'), path.join(__dirname, 'dist', 'SplashScreen.css'));
   }
 } catch (error) {
   console.error('❌ Error processing CSS:', error);
+}
+
+// Add this to your build.js to create a placeholder logo if it doesn't exist
+if (!fs.existsSync(path.join(__dirname, 'src', 'assets', 'lynx-logo.png'))) {
+  console.log('No logo found, creating a placeholder SVG...');
+  
+  // Create assets directory if it doesn't exist
+  if (!fs.existsSync(path.join(__dirname, 'src', 'assets'))) {
+    fs.mkdirSync(path.join(__dirname, 'src', 'assets'), { recursive: true });
+  }
+  
+  // Copy a placeholder SVG file (we'll create it as a text file with .png extension for simplicity)
+  const placeholderLogoSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="#4f46e5" rx="20" />
+  <text x="50" y="55" font-family="Arial" font-size="24" text-anchor="middle" fill="white">Lynx</text>
+</svg>`;
+
+  fs.writeFileSync(path.join(__dirname, 'src', 'assets', 'lynx-logo.svg'), placeholderLogoSvg);
+  console.log('✅ Created placeholder logo');
+  
+  // Also copy it to the dist folder
+  fs.copyFileSync(path.join(__dirname, 'src', 'assets', 'lynx-logo.svg'), path.join(__dirname, 'dist', 'lynx-logo.svg'));
 }
 
 // Create global script files
@@ -199,7 +252,7 @@ try {
     }),
     "__ENABLE_SSR__": "false"
   };
-  
+   
   const defineString = Object.entries(processEnv)
     .map(([key, value]) => `--define:${key}=${value}`)
     .join(" ");

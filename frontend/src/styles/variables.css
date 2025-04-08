@@ -1,7 +1,4 @@
-/* Use Tailwind directives instead of imports */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 /* Root variables for theme - light mode defaults */
 :root {

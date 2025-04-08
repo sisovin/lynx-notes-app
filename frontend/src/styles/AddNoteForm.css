@@ -1,0 +1,162 @@
+.add-note-form-container {
+  background-color: var(--card-background, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  overflow: hidden;
+}
+
+.add-note-form-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-note-form-header h2 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-color, #333333);
+  margin: 0;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  color: var(--text-secondary, #6c757d);
+}
+
+.close-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.add-note-form {
+  padding: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+  color: var(--text-secondary, #6c757d);
+}
+
+.title-input, .content-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: var(--input-background, #ffffff);
+  color: var(--text-color, #333333);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.title-input:focus, .content-textarea:focus {
+  outline: none;
+  border-color: var(--primary-color, #4f46e5);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.content-textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cancel-button, .save-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.cancel-button {
+  background-color: transparent;
+  border: 1px solid var(--border-color, #e5e7eb);
+  color: var(--text-secondary, #6c757d);
+}
+
+.cancel-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.save-button {
+  background-color: var(--primary-color, #4f46e5);
+  border: 1px solid var(--primary-color, #4f46e5);
+  color: white;
+}
+
+.save-button:hover {
+  background-color: var(--primary-hover, #4338ca);
+  transform: translateY(-1px);
+}
+
+.save-button:disabled, .cancel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: rgb(220, 38, 38);
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 16px;
+  font-size: 0.875rem;
+}
+
+/* Dark mode styles */
+.dark .add-note-form-container {
+  background-color: var(--card-background, #2d2d2d);
+  border-color: var(--border-color, #4b5563);
+}
+
+.dark .add-note-form-header {
+  border-color: var(--border-color, #4b5563);
+}
+
+.dark .add-note-form-header h2 {
+  color: var(--text-color, #f0f0f0);
+}
+
+.dark .form-group label {
+  color: var(--text-secondary, #adb5bd);
+}
+
+.dark .title-input, .dark .content-textarea {
+  background-color: var(--input-background, #1f1f1f);
+  color: var(--text-color, #f0f0f0);
+  border-color: var(--border-color, #4b5563);
+}
+
+.dark .cancel-button {
+  border-color: var(--border-color, #4b5563);
+  color: var(--text-secondary, #adb5bd);
+}
+
+.dark .cancel-button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}

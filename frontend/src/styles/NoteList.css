@@ -42,6 +42,7 @@
   word-break: break-word;
   display: -webkit-box;
   -webkit-line-clamp: 6;
+  line-clamp: 6;
   -webkit-box-orient: vertical;
   overflow: hidden;
   margin-bottom: 8px;
@@ -66,6 +67,11 @@
 
 .note-card:hover .note-actions {
   opacity: 1;
+}
+
+/* Add this class */
+.always-visible {
+  opacity: 1 !important;
 }
 
 .note-action-button {

@@ -1,23 +1,18 @@
-/* .cjs */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./index.html"
-  ],
-  darkMode: 'class',
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        background: 'var(--background)',
-        card: 'var(--card-background)',
-        text: 'var(--text-color)',
-        secondary: 'var(--text-secondary)',
-        primary: 'var(--primary-color)',
-        hover: 'var(--hover-color)',
-        border: 'var(--border-color)'
-      }
+        background: "var(--background)",
+        foreground: "var(--text-color)",
+        card: "var(--card-background)",
+        primary: "var(--primary-color)",
+        hover: "var(--hover-color)",
+        secondary: "var(--text-secondary)",
+        border: "var(--border-color)",
+      },
     },
   },
-  plugins: [],
 };

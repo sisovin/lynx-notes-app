@@ -16,7 +16,8 @@
     "@lynx-js/react": "^0.106.2",
     "axios": "^1.8.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",
@@ -25,8 +26,8 @@
     "@lynx-js/react-rsbuild-plugin": "^0.9.4",
     "@lynx-js/rspeedy": "^0.8.7",
     "@lynx-js/types": "^3.2.1",
-    "@rsbuild/core": "^0.4.13",
-    "@rsbuild/plugin-react": "^0.4.13",
+    "@rsbuild/core": "^1.3.4",
+    "@rsbuild/plugin-react": "^1.1.1",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/postcss": "^4.1.3",
     "@tailwindcss/typography": "^0.5.16",

@@ -2,16 +2,37 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
+import { spawn } from 'child_process';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const watchMode = process.argv.includes('--watch');
 const distDir = path.join(__dirname, 'dist');
 const outputFile = path.join(distDir, 'client.css');
+const tailwindOutputFile = path.join(__dirname, 'src', 'styles', 'tailwind-output.css');
 const fallbackFile = path.join(__dirname, 'src', 'fallback.css');
+const variablesFile = path.join(__dirname, 'src', 'styles', 'variables.css');
 
-// Ensure dist directory exists
+// Ensure directories exist
 if (!fs.existsSync(distDir)) {
   fs.mkdirSync(distDir, { recursive: true });
+}
+
+if (!fs.existsSync(path.join(__dirname, 'src', 'styles'))) {
+  fs.mkdirSync(path.join(__dirname, 'src', 'styles'), { recursive: true });
+}
+
+// Create variables.css if it doesn't exist
+if (!fs.existsSync(variablesFile)) {
+  // Copy content from the non-tailwind parts of index.css
+  try {
+    const indexContent = fs.readFileSync(path.join(__dirname, 'src', 'index.css'), 'utf8');
+    // Extract everything after the tailwind directives
+    const nonTailwindContent = indexContent.split('@tailwind utilities;')[1] || '';
+    fs.writeFileSync(variablesFile, nonTailwindContent);
+    console.log('✅ Created variables.css with theme variables');
+  } catch (error) {
+    console.error('❌ Error creating variables.css:', error);
+  }
 }
 
 try {
@@ -25,10 +46,9 @@ try {
     
     if (watchMode) {
       // For watch mode, use spawn
-      const { spawn } = require('child_process');
       const tailwind = spawn(tailwindBin, [
         '-i', './src/index.css', 
-        '-o', outputFile, 
+        '-o', tailwindOutputFile, 
         '--watch'
       ], { 
         stdio: 'inherit',
@@ -44,7 +64,10 @@ try {
       });
     } else {
       // For one-time build, use execSync
-      execSync(`"${tailwindBin}" -i ./src/index.css -o "${outputFile}"`, { stdio: 'inherit' });
+      execSync(`"${tailwindBin}" -i ./src/index.css -o "${tailwindOutputFile}"`, { stdio: 'inherit' });
+      
+      // Now combine the Tailwind output with variables.css
+      combineCSS();
     }
   } else {
     console.error('Tailwind binary not found, falling back to basic CSS');
@@ -55,34 +78,60 @@ try {
   useFallbackCSS();
 }
 
+function combineCSS() {
+  try {
+    let combinedCss = '';
+    
+    // First add the tailwind output if it exists
+    if (fs.existsSync(tailwindOutputFile)) {
+      combinedCss += fs.readFileSync(tailwindOutputFile, 'utf8');
+      console.log('✅ Added Tailwind output to combined CSS');
+    }
+    
+    // Then add variables.css
+    if (fs.existsSync(variablesFile)) {
+      combinedCss += '\n\n' + fs.readFileSync(variablesFile, 'utf8');
+      console.log('✅ Added variables.css to combined CSS');
+    }
+    
+    // Add other component styles
+    // Include SplashScreen.css, etc. similar to your current build.js
+    
+    // Write the combined CSS to the output file
+    fs.writeFileSync(outputFile, combinedCss);
+    console.log('✅ Combined CSS written to client.css');
+  } catch (error) {
+    console.error('❌ Error combining CSS:', error);
+    useFallbackCSS();
+  }
+}
+
 function useFallbackCSS() {
   // Fall back to copying the basic CSS file
   try {
     if (fs.existsSync(fallbackFile)) {
       fs.copyFileSync(fallbackFile, outputFile);
       console.log('Fallback CSS copied successfully');
+    } else if (fs.existsSync(variablesFile)) {
+      fs.copyFileSync(variablesFile, outputFile);
+      console.log('Using variables.css as fallback');
     } else {
       console.log('Creating minimal CSS file...');
       const minimalCSS = `
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: var(--background, #f8f9fa);
-  color: var(--text-color, #333333);
-}
-
+/* Root variables for theme - light mode defaults */
 :root {
-  --background: #f8f9fa;
-  --card-background: #ffffff;
-  --text-color: #333333;
+  /* Light theme variables */
+  --background: #ffffff;
+  --card-background: #f8f9fa;
+  --text-color: #212529;
   --text-secondary: #6c757d;
-  --primary-color: #4f46e5;
-  --hover-color: #4338ca;
-  --border-color: #e5e7eb;
+  --primary-color: #6366f1;
+  --hover-color: #4f46e5;
+  --border-color: #dee2e6;
 }
 
 .dark {
+  /* Dark theme variables */
   --background: #1a1a1a;
   --card-background: #2d2d2d;
   --text-color: #f0f0f0;
@@ -92,14 +141,13 @@ body {
   --border-color: #4b5563;
 }
 
-.min-h-screen { min-height: 100vh; }
-.bg-background { background-color: var(--background); }
-.text-text { color: var(--text-color); }
-.fixed { position: fixed; }
-.top-4 { top: 1rem; }
-.right-4 { right: 1rem; }
-.z-50 { z-index: 50; }
-      `;
+/* Apply base styles */
+html, body {
+  background-color: var(--background);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+`;
       fs.writeFileSync(outputFile, minimalCSS);
       console.log('Minimal CSS created');
     }

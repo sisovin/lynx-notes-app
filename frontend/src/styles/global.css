@@ -26,13 +26,11 @@
   --border-color: #4b5563;
 }
 
-/* Basic element styling */
-body {
+/* Apply base styles */
+html, body {
   background-color: var(--background);
   color: var(--text-color);
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Reset and prevent duplication */
@@ -79,6 +77,38 @@ button {
 
 button:hover {
   border-color: var(--primary-color);
+}
+
+/* Make sure card backgrounds use the variable */
+.bg-card {
+  background-color: var(--card-background);
+}
+
+/* Ensure text colors use the variables */
+.text-foreground {
+  color: var(--text-color);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+/* Additional utility classes for other variables */
+.border-border {
+  border-color: var(--border-color);
+}
+
+.bg-primary, .text-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.hover\:bg-hover:hover {
+  background-color: var(--hover-color);
+}
+
+.hover\:text-hover:hover {
+  color: var(--hover-color);
 }
 
 /* Add Tailwind utility classes for convenience */
