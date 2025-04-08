@@ -37,12 +37,13 @@ const NotesPage: React.FC = () => {
   }, [navigate]);
 
   // Add this handler
-const handleSaveNewNote = () => {
+// In the handleSaveNewNote function, update it to use await
+const handleSaveNewNote = async () => {
   setShowAddNote(false);
   if (noteListRef.current) {
-    noteListRef.current.refresh();
+    await noteListRef.current.refresh();
   }
-  };
+};
   
   const handleEditNote = (note: Note) => {
     console.log('NotesPage: Opening edit form for note:', note.id);

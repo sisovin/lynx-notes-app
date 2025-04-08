@@ -17,11 +17,22 @@ const initializeDarkMode = () => {
   
   if (shouldBeDark) {
     document.documentElement.classList.add("dark");
-    console.log("Dark mode initialized to ON");
+    console.log("Dark mode initialized: ON");
   } else {
     document.documentElement.classList.remove("dark");
-    console.log("Dark mode initialized to OFF");
+    console.log("Dark mode initialized: OFF");
   }
+  
+  // For debugging
+  setTimeout(() => {
+    const isDark = document.documentElement.classList.contains("dark");
+    console.log("Dark mode class applied:", isDark);
+    console.log("Current CSS variables:", {
+      background: getComputedStyle(document.documentElement).getPropertyValue('--background'),
+      textColor: getComputedStyle(document.documentElement).getPropertyValue('--text-color'),
+      cardBackground: getComputedStyle(document.documentElement).getPropertyValue('--card-background')
+    });
+  }, 100);
 };
 
 // Run dark mode initialization immediately
@@ -35,6 +46,4 @@ if (rootElement) {
       <App />
     </ToastProvider>
   );
-} else {
-  console.error("Root element not found");
 }

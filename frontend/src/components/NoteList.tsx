@@ -24,8 +24,9 @@ interface NoteListProps {
   onDelete?: (noteId: number) => void;
 }
 
+// Ensure this is exported
 export interface NoteListHandle {
-  refresh: () => void;
+  refresh: () => Promise<void>; // Change to Promise<void> for better typing
 }
 
 const NoteList = forwardRef<NoteListHandle, NoteListProps>(
@@ -133,9 +134,9 @@ const NoteList = forwardRef<NoteListHandle, NoteListProps>(
       }
     }, [onDelete, fetchNotes]);
 
-    // Expose the refresh method
+    // Expose the refresh method via useImperativeHandle
     useImperativeHandle(ref, () => ({
-      refresh: fetchNotes,
+      refresh: fetchNotes, // This exposes the fetchNotes method as "refresh"
     }));
 
     // Only run the effect when the component mounts
@@ -216,7 +217,6 @@ const NoteList = forwardRef<NoteListHandle, NoteListProps>(
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="text-foreground" // Use theme color for the moon icon in light mode
                   >
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
@@ -237,7 +237,6 @@ const NoteList = forwardRef<NoteListHandle, NoteListProps>(
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="text-foreground" // Use theme color for the moon icon in light mode
                   >
                     <path d="M3 6h18"></path>
                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>

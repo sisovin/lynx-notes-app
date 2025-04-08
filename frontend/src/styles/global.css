@@ -1,121 +1,85 @@
-/* Global styles and variables */
 
-:root {
-  font-family: system-ui, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  /* Light theme variables (default) */
-  --background: #f8f9fa;
-  --card-background: #ffffff;
-  --text-color: #333333;
-  --text-secondary: #6c757d;
-  --primary-color: #4f46e5;
-  --hover-color: #4338ca;
-  --border-color: #e5e7eb;
-}
-
-/* Dark mode overrides */ 
-.dark {
-  --background: #1a1a1a;
-  --card-background: #2d2d2d;
-  --text-color: #f0f0f0;
-  --text-secondary: #adb5bd;
-  --primary-color: #6366f1;
-  --hover-color: #818cf8;
-  --border-color: #4b5563;
-}
-
-/* Apply base styles */
-html, body {
-  background-color: var(--background);
-  color: var(--text-color);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Reset and prevent duplication */
-#root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Prevent component duplication through z-index management */
-.fixed {
-  z-index: 10; /* Default z-index for fixed elements */
-}
-
-.z-50 {
-  z-index: 50; /* Higher z-index for important UI like dark mode toggle */
-}
-
-.z-40 {
-  z-index: 40; /* Slightly lower for other UI elements */
+/* Global styles */
+* {
+  box-sizing: border-box;
 }
 
 a {
-  font-weight: 500;
   color: var(--primary-color);
-  text-decoration: inherit;
+  text-decoration: none;
 }
 
 a:hover {
-  color: var(--hover-color);
+  text-decoration: underline;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: var(--card-background);
-  cursor: pointer;
-  transition: border-color 0.25s;
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
-button:hover {
-  border-color: var(--primary-color);
+/* Utility classes */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-/* Make sure card backgrounds use the variable */
-.bg-card {
-  background-color: var(--card-background);
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
-/* Ensure text colors use the variables */
-.text-foreground {
-  color: var(--text-color);
+/* Animation classes */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.text-secondary {
-  color: var(--text-secondary);
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
-/* Additional utility classes for other variables */
-.border-border {
-  border-color: var(--border-color);
+/* Application wide styles */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.bg-primary, .text-primary {
-  background-color: var(--primary-color);
-  color: white;
+.main-content {
+  flex: 1;
+  padding: 1rem;
 }
 
-.hover\:bg-hover:hover {
-  background-color: var(--hover-color);
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .hidden-mobile {
+    display: none;
+  }
 }
 
-.hover\:text-hover:hover {
-  color: var(--hover-color);
+@media (min-width: 641px) {
+  .hidden-desktop {
+    display: none;
+  }
 }
-
-/* Add Tailwind utility classes for convenience */
-.min-h-screen { min-height: 100vh; }
-.bg-background { background-color: var(--background); }
-.text-text { color: var(--text-color); }
-.fixed { position: fixed; }
-.top-4 { top: 1rem; }
-.right-4 { right: 1rem; }
-.z-50 { z-index: 50; }

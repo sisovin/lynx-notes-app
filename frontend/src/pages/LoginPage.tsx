@@ -85,7 +85,7 @@ const LoginPage: React.FC = () => {
     <div className="login-container">
       <div className="login-card">
         <div className="login-header">
-          <h1 className="app-title">Lynx Notes</h1>
+          <h1 className="app-title">Lynxjs Notes App</h1>
           <p className="app-tagline">Securely capture and organize your thoughts</p>
         </div>
         

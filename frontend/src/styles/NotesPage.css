@@ -1,5 +1,6 @@
-/* Add this to your existing CSS */
 
+/* Google Keep inspired styling for notes */
+/* Add this to your existing CSS */
 .notes-header {
   display: flex;
   justify-content: space-between;
@@ -29,4 +30,139 @@
 
 .dark .add-note-button:hover {
   background-color: var(--primary-hover, #4f46e5);
+}
+
+.notes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.note-card {
+  background-color: var(--card-background, #ffffff);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+  break-inside: avoid;
+  border: 1px solid var(--border-color, #e5e7eb);
+  position: relative;
+}
+
+.note-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.note-content {
+  padding: 16px;
+}
+
+.note-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--text-color, #333333);
+  word-break: break-word;
+}
+
+.note-body {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #6c757d);
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.note-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  border-top: 1px solid var(--border-color, #e5e7eb);
+  font-size: 0.75rem;
+  color: var(--text-secondary, #6c757d);
+}
+
+.note-actions {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: flex;
+  gap: 8px;
+}
+
+.note-card:hover .note-actions {
+  opacity: 1;
+}
+
+/* Add this class */
+.always-visible {
+  opacity: 1 !important;
+}
+
+.note-action-button {
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.note-action-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode specific styles */
+.dark .note-card {
+  background-color: var(--card-background, #2d2d2d);
+  border-color: var(--border-color, #4b5563);
+}
+
+.dark .note-title {
+  color: var(--text-color, #f0f0f0);
+}
+
+.dark .note-body {
+  color: var(--text-secondary, #adb5bd);
+}
+
+.dark .note-footer {
+  border-color: var(--border-color, #4b5563);
+  color: var(--text-secondary, #adb5bd);
+}
+
+.dark .note-action-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Loading and empty states */
+.notes-loading {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-secondary, #6c757d);
+}
+
+.notes-empty {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-secondary, #6c757d);
+  font-size: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .notes-container {
+    grid-template-columns: 1fr;
+  }
 }

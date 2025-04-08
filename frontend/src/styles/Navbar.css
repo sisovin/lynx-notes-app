@@ -35,6 +35,8 @@
   color: var(--danger-color, #dc3545);
   cursor: pointer;
   transition: all 0.2s ease;
+  /* Make the button only as wide as its content */
+  width: fit-content;
 }
 
 .logout-button:hover {
@@ -72,5 +74,11 @@
   .navbar-menu {
     width: 100%;
     justify-content: space-between;
+  }
+  
+  /* Keep the button narrow on mobile */
+  .logout-button {
+    width: auto;
+    flex-shrink: 0;
   }
 }

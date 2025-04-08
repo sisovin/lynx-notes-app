@@ -21,7 +21,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ darkMode = false }) => {
     <div className={`splash-screen ${darkMode ? 'dark-splash' : 'light-splash'}`}>
       <div className="splash-screen__center">
         <img src={lynxLogo} className="splash-screen__logo" alt="Lynx Logo" />
-        <div className="splash-screen__text">Lynx Notes</div>
+        <div className="splash-screen__text">Lynxjs Notes App</div>
       </div>
     </div>
   );

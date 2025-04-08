@@ -5,15 +5,6 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// RUN GENERATE-CSS.JS BEFORE ANYTHING ELSE
-console.log('📝 Building Tailwind CSS...');
-try {
-  execSync('node generate-css.js', { stdio: 'inherit' });
-  console.log('✅ Tailwind CSS built successfully');
-} catch (error) {
-  console.error('⚠️ Tailwind CSS build failed, using fallback CSS:', error);
-  // Continue with the build process
-}
 // Ensure dist directory exists
 if (!fs.existsSync(path.join(__dirname, 'dist'))) {
   fs.mkdirSync(path.join(__dirname, 'dist'), { recursive: true });
@@ -35,67 +26,166 @@ if (!fs.existsSync(path.join(__dirname, 'src', 'styles', 'global.css'))) {
   console.log('Created empty global.css');
 }
 
-
+// Replace the entire CSS processing block with this improved version:
 // Process CSS files
 console.log('📝 Preparing CSS files...');
 try {
+  // Array to collect all import statements
+  const imports = [];
   // Create a single combined CSS file
   let combinedCss = "";
 
-  // Start with global.css
-  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'global.css'))) {
-    combinedCss += fs.readFileSync(path.join(__dirname, 'src', 'styles', 'global.css'), "utf8");
-    console.log("✅ Added global.css to combined CSS");
+  // Function to extract imports from CSS content
+  const extractImports = (cssContent) => {
+    // Regex to match @import statements
+    const importRegex = /@import\s+(['"])(.+?)\1\s*;/g;
+    const extractedImports = [];
+    let match;
+
+    // Extract all imports
+    while ((match = importRegex.exec(cssContent)) !== null) {
+      extractedImports.push(match[0]);
+    }
+
+    // Remove imports from the content
+    const contentWithoutImports = cssContent.replace(importRegex, "");
+
+    return {
+      imports: extractedImports,
+      content: contentWithoutImports,
+    };
+  };
+
+  // Process a CSS file and add it to the combined CSS
+  const processCssFile = (filePath, fileName) => {
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, "utf8");
+      
+      // Extract imports
+      const { imports: fileImports, content: fileContent } = extractImports(content);
+      
+      // Add any new imports to our imports array
+      fileImports.forEach((importRule) => {
+        if (!imports.includes(importRule)) {
+          imports.push(importRule);
+        }
+      });
+      
+      combinedCss += "\n\n" + fileContent;
+      console.log(`✅ Added ${fileName} to combined CSS`);
+      return true;
+    }
+    return false;
+  };
+
+  // Start with variables.css if it exists
+  processCssFile(
+    path.join(__dirname, "src", "styles", "variables.css"), 
+    "variables.css"
+  );
+
+  // Then global.css
+  processCssFile(
+    path.join(__dirname, "src", "styles", "global.css"), 
+    "global.css"
+  );
+
+  // Add component-specific CSS files
+  // First check in the components directory, then fall back to the styles directory
+  
+  // NoteList.css
+  if (!processCssFile(
+    path.join(__dirname, "src", "styles", "components", "NoteList.css"),
+    "components/NoteList.css"
+  )) {
+    processCssFile(
+      path.join(__dirname, "src", "styles", "NoteList.css"),
+      "NoteList.css"
+    );
+  }
+  
+  // SplashScreen.css
+  if (!processCssFile(
+    path.join(__dirname, "src", "styles", "components", "SplashScreen.css"),
+    "components/SplashScreen.css"
+  )) {
+    processCssFile(
+      path.join(__dirname, "src", "styles", "SplashScreen.css"),
+      "SplashScreen.css"
+    );
   }
 
-  // Add the NoteList component styles
-  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'components', 'NoteList.css'))) {
-    combinedCss +=
-      "\n\n" + fs.readFileSync(path.join(__dirname, 'src', 'styles', 'components', 'NoteList.css'), "utf8");
-    console.log("✅ Added NoteList.css to combined CSS");
-  } else if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'NoteList.css'))) {
-    // Fallback to the old location
-    combinedCss += "\n\n" + fs.readFileSync(path.join(__dirname, 'src', 'styles', 'NoteList.css'), "utf8");
-    console.log("✅ Added NoteList.css to combined CSS");
+  // Process all other CSS files in the styles directory
+  if (fs.existsSync(path.join(__dirname, "src", "styles"))) {
+    const cssFiles = fs.readdirSync(path.join(__dirname, "src", "styles"));
+    cssFiles.forEach((file) => {
+      if (
+        file.endsWith(".css") &&
+        file !== "global.css" &&
+        file !== "variables.css" &&
+        file !== "NoteList.css" &&
+        file !== "SplashScreen.css"
+      ) {
+        processCssFile(
+          path.join(__dirname, "src", "styles", file),
+          file
+        );
+      }
+    });
   }
 
-  // Add the SplashScreen component styles
-  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'components', 'SplashScreen.css'))) {
-    combinedCss +=
-      "\n\n" + fs.readFileSync(path.join(__dirname, 'src', 'styles', 'components', 'SplashScreen.css'), "utf8");
-    console.log("✅ Added SplashScreen.css to combined CSS");
-  } else if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'SplashScreen.css'))) {
-    // Fallback to the old location
-    combinedCss += "\n\n" + fs.readFileSync(path.join(__dirname, 'src', 'styles', 'SplashScreen.css'), "utf8");
-    console.log("✅ Added SplashScreen.css to combined CSS");
+  // Process all other CSS files in the components subdirectory
+  if (fs.existsSync(path.join(__dirname, "src", "styles", "components"))) {
+    const componentCssFiles = fs.readdirSync(
+      path.join(__dirname, "src", "styles", "components")
+    );
+    componentCssFiles.forEach((file) => {
+      if (
+        file.endsWith(".css") &&
+        file !== "NoteList.css" &&
+        file !== "SplashScreen.css"
+      ) {
+        processCssFile(
+          path.join(__dirname, "src", "styles", "components", file),
+          "components/" + file
+        );
+      }
+    });
   }
+
+  // Create the final CSS by placing all imports at the top, then the content
+  let finalCss = "";
+
+  // Add imports first (only unique ones)
+  if (imports.length > 0) {
+    finalCss += "/* Combined imports */\n";
+    finalCss += [...new Set(imports)].join("\n");
+    finalCss += "\n\n";
+  }
+
+  // Add all CSS content
+  finalCss += combinedCss;
 
   // Write the combined CSS file
-  fs.writeFileSync(path.join(__dirname, 'dist', 'client.css'), combinedCss);
-  console.log("✅ Combined CSS written to client.css");
+  fs.writeFileSync(path.join(__dirname, "dist", "styles.css"), finalCss);
+  console.log("✅ Combined CSS written to styles.css");
 
-  // Also keep individual files for direct linking
-  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'global.css'))) {
-    fs.copyFileSync(path.join(__dirname, 'src', 'styles', 'global.css'), path.join(__dirname, 'dist', 'global.css'));
-  }
-
-  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'components', 'NoteList.css'))) {
-    fs.copyFileSync(path.join(__dirname, 'src', 'styles', 'components', 'NoteList.css'), path.join(__dirname, 'dist', 'NoteList.css'));
-  } else if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'NoteList.css'))) {
-    fs.copyFileSync(path.join(__dirname, 'src', 'styles', 'NoteList.css'), path.join(__dirname, 'dist', 'NoteList.css'));
-  }
-
-  if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'components', 'SplashScreen.css'))) {
+  // Also create client.css as an alias for backward compatibility
+  fs.writeFileSync(path.join(__dirname, "dist", "client.css"), finalCss);
+  console.log("✅ Combined CSS also written to client.css for compatibility");
+  
+  // Copy individual files for direct linking
+  if (fs.existsSync(path.join(__dirname, "src", "styles", "global.css"))) {
     fs.copyFileSync(
-      path.join(__dirname, 'src', 'styles', 'components', 'SplashScreen.css'),
-      path.join(__dirname, 'dist', 'SplashScreen.css')
+      path.join(__dirname, "src", "styles", "global.css"),
+      path.join(__dirname, "dist", "global.css")
     );
-  } else if (fs.existsSync(path.join(__dirname, 'src', 'styles', 'SplashScreen.css'))) {
-    fs.copyFileSync(path.join(__dirname, 'src', 'styles', 'SplashScreen.css'), path.join(__dirname, 'dist', 'SplashScreen.css'));
+    console.log("✅ Copied global.css for direct linking");
   }
 } catch (error) {
   console.error('❌ Error processing CSS:', error);
 }
+/* End Process CSS files */
 
 // Add this to your build.js to create a placeholder logo if it doesn't exist
 if (!fs.existsSync(path.join(__dirname, 'src', 'assets', 'lynx-logo.png'))) {

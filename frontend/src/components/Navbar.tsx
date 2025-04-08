@@ -37,7 +37,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode }) => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <h1>Lynx Notes</h1>
+        <h1>Lynxjs Notes App</h1>
       </div>
       
       <div className="navbar-menu">

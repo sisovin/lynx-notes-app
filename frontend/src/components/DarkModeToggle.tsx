@@ -1,20 +1,31 @@
-import React from "react";
+import React, { useEffect } from 'react';
+import '../styles/DarkModeToggle.css';
 
 interface DarkModeToggleProps {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
 }
 
-const DarkModeToggle: React.FC<DarkModeToggleProps> = ({ isDarkMode, toggleDarkMode }) => {
+const DarkModeToggle: React.FC<DarkModeToggleProps> = ({ 
+  isDarkMode, 
+  toggleDarkMode 
+}) => {
+  // Ensure dark mode class is applied on component mount and updates
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+  
   return (
     <button
       onClick={toggleDarkMode}
-      className={`flex items-center justify-center p-2 rounded-full transition-colors ${
-        isDarkMode 
-          ? "bg-gray-700 hover:bg-gray-600 text-white" 
-          : "bg-card hover:bg-primary/10 text-foreground"
-      }`}
-      aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+      className={`dark-mode-toggle ${isDarkMode ? 'dark' : 'light'}`}
+      aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       {isDarkMode ? (
         <svg
@@ -27,7 +38,6 @@ const DarkModeToggle: React.FC<DarkModeToggleProps> = ({ isDarkMode, toggleDarkM
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="text-white" // Enforce white color for the sun icon in dark mode
         >
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -50,7 +60,6 @@ const DarkModeToggle: React.FC<DarkModeToggleProps> = ({ isDarkMode, toggleDarkM
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="text-foreground" // Use theme color for the moon icon in light mode
         >
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
