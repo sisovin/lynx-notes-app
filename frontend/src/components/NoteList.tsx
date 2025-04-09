@@ -7,8 +7,11 @@ import React, {
 } from "react";
 import { apiService } from "../api/apiService";
 import { directApiHelpers } from "../api/directApi";
-// Import the CSS file
+
+// Import the component's own CSS file first
 import "../styles/NoteList.css";
+// Then import any shared styles
+import "../styles/NotesPage.css";
 
 interface Note {
   id: number;
@@ -201,16 +204,17 @@ const NoteList = forwardRef<NoteListHandle, NoteListProps>(
                 {note.updatedAt &&
                   `Updated: ${new Date(note.updatedAt).toLocaleString()}`}
               </span>
-              <div className="note-actions always-visible">              
+              <div className="note-actions always-visible">
                 <button
-                  className="note-action-button"
+                  className="note-action-button edit-button"
                   aria-label="Edit"
                   onClick={() => handleEditNote(note)}
+                  title="Edit note"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -223,14 +227,15 @@ const NoteList = forwardRef<NoteListHandle, NoteListProps>(
                   </svg>
                 </button>
                 <button
-                  className="note-action-button"
+                  className="note-action-button delete-button"
                   aria-label="Delete"
                   onClick={() => handleDeleteNote(note.id)}
+                  title="Delete note"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"

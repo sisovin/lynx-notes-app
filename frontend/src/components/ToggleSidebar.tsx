@@ -143,7 +143,7 @@ const ToggleSidebar: React.FC<ToggleSidebarProps> = ({
         
         <div className="sidebar-footer">
           <button 
-            className="logout-button"
+            className="sidebar-logout-button"
             onClick={handleLogout}
           >
             <svg 

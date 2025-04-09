@@ -10,6 +10,8 @@
   --border-color: #dee2e6;
   --input-background: #ffffff;
   --danger-color: #dc3545;
+  --edit-icon-color: #4f46e5;
+  --delete-icon-color: #dc3545;
 }
 
 /* Dark theme variables */
@@ -23,10 +25,13 @@
   --border-color: #4b5563;
   --input-background: #1f1f1f;
   --danger-color: #ef4444;
+  --edit-icon-color: #6366f1;
+  --delete-icon-color: #ef4444;
 }
 
 /* Base styles */
 html {
+  /* Remove text-size-adjust for cross-browser compatibility */
   background-color: var(--background);
   color: var(--text-color);
 }
@@ -43,8 +48,21 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Transitions for theme changes */
+/* Transitions for dark mode toggle */
 * {
-  transition-property: background-color, border-color, color;
+  transition-property: background-color, border-color, color, fill, stroke;
   transition-duration: 0.2s;
+}
+
+/* Remove default styling for buttons */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Remove default styling for inputs and textareas */
+input, textarea {
+  font-family: inherit;
 }

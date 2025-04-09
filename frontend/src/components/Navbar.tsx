@@ -46,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode }) => {
         </div>
         
         <button 
-          className="logout-button"
+          className="navbar-logout-button"
           onClick={handleLogout}
         >
           Logout

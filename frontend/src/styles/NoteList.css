@@ -74,23 +74,79 @@
   opacity: 1 !important;
 }
 
+/* Update the note action buttons styling */
 .note-action-button {
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.9) !important; /* Make background more visible */
+  border: 2px solid #b0b0b0 !important; /* More visible default border */
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 36px; /* Slightly larger */
+  height: 36px; /* Slightly larger */
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
   cursor: pointer;
+  margin-left: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important; /* Stronger shadow */
+  position: relative; /* For better visibility */
+  z-index: 5; /* Ensure buttons appear above other elements */
 }
 
-.note-action-button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+.note-action-button svg {
+  stroke: currentColor; /* Ensure SVG inherits color from parent */
+  stroke-width: 2.5;
+  fill: none;
 }
 
+/* Add more specific edit button styling */
+.note-action-button.edit-button,
+.note-action-button[aria-label="Edit"] {
+  color: #4f46e5 !important; /* Primary blue color */
+  border-color: #4f46e5 !important; /* Match text color */
+}
+
+.note-action-button.edit-button:hover,
+.note-action-button[aria-label="Edit"]:hover {
+  background-color: rgba(79, 70, 229, 0.1) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0, A0, 0, 0.2) !important;
+}
+
+/* Add more specific delete button styling */
+.note-action-button.delete-button,
+.note-action-button[aria-label="Delete"] {
+  color: #dc3545 !important; /* Danger red color */
+  border-color: #dc3545 !important; /* Match text color */
+}
+
+.note-action-button.delete-button:hover,
+.note-action-button[aria-label="Delete"]:hover {
+  background-color: rgba(220, 53, 69, 0.1) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Dark mode specific styles with stronger specificity */
+.dark .note-action-button {
+  background: rgba(45, 45, 45, 0.9) !important;
+  border-color: #4b5563 !important;
+}
+
+.dark .note-action-button.edit-button,
+.dark .note-action-button[aria-label="Edit"] {
+  color: #6366f1 !important;
+  border-color: #6366f1 !important;
+}
+
+.dark .note-action-button.delete-button,
+.dark .note-action-button[aria-label="Delete"] {
+  color: #ef4444 !important;
+  border-color: #ef4444 !important;
+}
+
+.dark .note-action-button:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
 /* Dark mode specific styles */
 .dark .note-card {
   background-color: var(--card-background, #2d2d2d);
